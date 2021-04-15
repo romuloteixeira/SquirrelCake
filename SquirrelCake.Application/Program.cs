@@ -1,11 +1,6 @@
+using ElectronNET.API;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SquirrelCake.Application
 {
@@ -20,6 +15,7 @@ namespace SquirrelCake.Application
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseElectron(args);
                     webBuilder.UseStartup<Startup>();
                 });
     }

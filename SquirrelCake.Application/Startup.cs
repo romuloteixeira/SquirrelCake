@@ -1,3 +1,4 @@
+using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -51,6 +52,8 @@ namespace SquirrelCake.Application
             {
                 endpoints.MapRazorPages();
             });
+
+            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
         }
     }
 }
