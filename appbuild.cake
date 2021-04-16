@@ -115,7 +115,7 @@ Task("NuSpec")
 	.IsDependentOn("Publish")
 	.Does(() => {
 		CopyFile(File(nuSpecTemplate), nuSpec);
-		
+
 		var namespaceDic = new Dictionary<string, string>
 		{
 			{"ns", "http://schemas.microsoft.con/packaging/2010/07/nuspec.xsd"}
@@ -128,6 +128,11 @@ Task("NuSpec")
 
 
 	});
+
+string GetVersion()
+{
+	return XmlPeek(application, "/Project/PropertyGroup/AssemblyVersion");
+}
 
 string GetExe(string releaseDirectory)
 {
