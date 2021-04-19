@@ -109,8 +109,12 @@ string GetDeploymentFolder(RuntimeEnum runtime)
 	}
 }
 
+const string NuSpecFileTemplate = "\t<file src=\".\\files\\{1}{0}\" target=\"lib\\net45\\{1}{0}\" />";
+
 var nuSpec = win10DeploymentDirectory + File("AutoMasshTik.nuspec");
 var nuSpecTemplate = win10DeploymentDirectory + File("AutoMasshTik.nuspec.Template");
+var win10PublishDirectory = win10DeploymentDirectory + Directory("files");
+//var macOSPublishDirectory = macOSeploymentDirectory + Directory("files");
 Task("NuSpec")
 	.IsDependentOn("Publish")
 	.Does(() => {
@@ -126,7 +130,12 @@ Task("NuSpec")
 		};
 		XmlPoke(nuSpec, "/ns:package/ns:metadata/ns:version", GetVersion(), settings);
 
+		var files = new List<string>();
+		files.Add(GetExe(win10PublishDirectory));
+		files.AddRange(GetFiles(win10PublishDirectory, "*"));
 
+		var relativeFiles = files.Select(f => string.Format(NuSpecFileTemplate, f, string.Empty)).ToArray();
+		XmlPoke(nuSpec, "/ns:package/ns:files", $"\n{string.Join("\n", relativeFiles)}\n", settings);
 	});
 
 string GetVersion()
@@ -155,14 +164,34 @@ List<string> GetFiles(string releaseDirectory, string extension)
 }
 
 
+var win10NupgkDirectory = win10DeploymentDirectory + Directory("nupkg");
+Task("NuPkg")
+	.IsDependentOn("NuSpec")
+	.Does(() => {
+		NuGetPack(nuSpec, new NuGetPackSettings{ OutputDirectory = win10NupgkDirectory});
+	});
+
+var win10OutputDirectory = win10DeploymentDirectory + Directory("output");
+Task("Squirrel")
+	.IsDependentOn("NuPkg")
+	.Does(() => {
+		FilePath nuPkgPath = win10NupgkDirectory + File(FormatNupkgName(GetVersion()));
+
+		Squirrel(nuPkgPath, new SquirrelSettings
+		{
+			NoMsi = true,
+			ReleaseDirectory = win10OutputDirectory,
+		});
+
+		SignFiles(new FilePath[]{ win10OutputDirectory + File("Setup.exe") });
+	});
+
+string FormatNupkgName(string version)
+{
+	return $"AutoMasshTik.{version}.nupkg";
+}
 
 var certificateThumbprint = Argument("thumprint", EnvironmentVariable("SignatureCertThumbprint"));
-var win10PublishDirectory = win10DeploymentDirectory + Directory("files");
-var win10OutputDirectory = win10DeploymentDirectory + Directory("output");
-var win10Nupgk = win10DeploymentDirectory + Directory("nupkg");
-var macOSPublishDirectory = macOSeploymentDirectory + Directory("files");
-const string NuspecFileTemplate = "\t<file src=\".\\files\\{1}{0}\" target=\"lib\\net45\\{1}{0}\" />";
-
 void SignFiles(IEnumerable<FilePath> files)
 {
 	if (string.IsNullOrWhiteSpace(certificateThumbprint))
@@ -173,11 +202,15 @@ void SignFiles(IEnumerable<FilePath> files)
 	var validFiles = files.Where(f => 
                                     string.Equals(f.GetExtension(), ".exe", StringComparison.OrdinalIgnoreCase)
                                     || string.Equals(f.GetExtension(), ".dll", StringComparison.OrdinalIgnoreCase));
-    Sign(validFiles, new SignToolSignSettings {
+    Sign(validFiles, new SignToolSignSettings 
+	{
             TimeStampUri = new Uri("http://timestamp.digicert.com"),
             CertThumbprint = certificateThumbprint.Replace(" ", "")
     });
 }
+
+
+
 
 
 
