@@ -1,6 +1,7 @@
 //Cake, Squirrel and Electron
-#addin "Cake.Squirrel"
-#tool "Squirrel.Windows&version=2.0.1"
+#addin nuget:?package=Cake.Figlet&version=2.0.1
+#addin Cake.Squirrel&version=0.15.1
+#tool Squirrel.Windows&version=2.0.1
 
 var solutionRoot = Directory("./");
 var solutionFolder = solutionRoot + File("SquirrelCake.sln");
@@ -111,8 +112,8 @@ string GetDeploymentFolder(RuntimeEnum runtime)
 
 const string NuSpecFileTemplate = "\t<file src=\".\\files\\{1}{0}\" target=\"lib\\net45\\{1}{0}\" />";
 
-var nuSpec = win10DeploymentDirectory + File("AutoMasshTik.nuspec");
-var nuSpecTemplate = win10DeploymentDirectory + File("AutoMasshTik.nuspec.Template");
+var nuSpec = win10DeploymentDirectory + File("SquirrelCakeTik.nuspec");
+var nuSpecTemplate = win10DeploymentDirectory + File("SquirrelCakeTik.nuspec.Template");
 var win10PublishDirectory = win10DeploymentDirectory + Directory("files");
 //var macOSPublishDirectory = macOSeploymentDirectory + Directory("files");
 Task("NuSpec")
@@ -188,7 +189,7 @@ Task("Squirrel")
 
 string FormatNupkgName(string version)
 {
-	return $"AutoMasshTik.{version}.nupkg";
+	return $"SquirrelCakeTik.{version}.nupkg";
 }
 
 var certificateThumbprint = Argument("thumprint", EnvironmentVariable("SignatureCertThumbprint"));
@@ -209,9 +210,44 @@ void SignFiles(IEnumerable<FilePath> files)
     });
 }
 
+Task("IncVersion")
+	.Does(() => {
+		var version = GetVersion();
+		var parts = version.Split('.');
+		parts[2] = (int.Parse(parts[2] + 1)).ToString();
+		version = string.Join(".", parts);
+		
+		XmlPoke(application, "/Project/PropertyGroup/AssemblyVersion", version);
 
+		Information($"New version is {version}");
+	});
 
+Task("GetVersion")
+	.Does(() => {
+		var version = GetVersion();
+		Information($"Version is {version}");
+	});
 
+Task("Default")
+	.Does(() => {
+		Information($"thumbprint is {EnvironmentVariable("SignatureCertThumbprint")}");
+		Information(
+			@"SquirrelCakeTik build process
+IncVersion   .... increased version's build part (in AssemblyInfo.cs)
+SetVersion .... sets version based on NewVersion argument (1.2.3 format)
+GetVersion .... displays current version
+Build      .... builds solution
+Test       .... builds and tests solution
+Publish    .... publish
+Nupkg      .... builds, tests and packs for distributuion
+SetTag     .... sets tag with current version to git repository
+Squirrel   .... Creates Squirell win10 deployment files
+Default    .... displays info
+Arguments
+	Runtime    ... Win10*, Linux, OSX
+	Thumbprint ... Certificate thumbprint used to sign Setup.exe (by default taken from environment variable 'SignatureCertThumbprint'). When empty, no signature is performed."
+		);
+	});
 
 
 var target = Argument("target", "ExecuteBuild");
