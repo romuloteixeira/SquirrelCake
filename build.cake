@@ -3,8 +3,10 @@
 #addin Cake.Squirrel&version=0.15.1
 #tool Squirrel.Windows&version=2.0.1
 
+
 var solutionRoot = Directory("./");
 var solutionFolder = solutionRoot + File("SquirrelCake.sln");
+var deploymentDirectory = Directory("./deployment");
 
 Task("CleanUp")
 	.Does(() => {
@@ -77,7 +79,6 @@ Task("Publish")
 		DotNetCorePublish(application, settings);
 	});
 
-var deploymentDirectory = Directory("./deployment");
 var win10DeploymentDirectory = deploymentDirectory + Directory("win10-x64");
 var macOSeploymentDirectory = deploymentDirectory + Directory("macOS-x64");
 var linuxDeploymentDirectory = deploymentDirectory + Directory("linux-x64");
@@ -120,15 +121,16 @@ Task("NuSpec")
 	.IsDependentOn("Publish")
 	.Does(() => {
 		CopyFile(File(nuSpecTemplate), nuSpec);
-
+		Console.WriteLine("2");
 		var namespaceDic = new Dictionary<string, string>
 		{
-			{"ns", "http://schemas.microsoft.con/packaging/2010/07/nuspec.xsd"}
+			{"ns", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"}
 		};
 		var settings = new XmlPokeSettings
 		{
 			Namespaces = namespaceDic,
 		};
+		Console.WriteLine("1", nuSpec);
 		XmlPoke(nuSpec, "/ns:package/ns:metadata/ns:version", GetVersion(), settings);
 
 		var files = new List<string>();
@@ -177,7 +179,6 @@ Task("Squirrel")
 	.IsDependentOn("NuPkg")
 	.Does(() => {
 		FilePath nuPkgPath = win10NupgkDirectory + File(FormatNupkgName(GetVersion()));
-
 		Squirrel(nuPkgPath, new SquirrelSettings
 		{
 			NoMsi = true,
@@ -250,5 +251,9 @@ Arguments
 	});
 
 
-var target = Argument("target", "ExecuteBuild");
-Task("ExecuteBuild");
+var target = Argument("target", "Squirrel");
+// Task("ExecuteBuild")
+// 	.Does(() => {
+// 		MSBuild("./SquirrelCake.sln");
+// 	});
+RunTarget(target);
