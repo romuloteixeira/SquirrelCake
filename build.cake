@@ -5,7 +5,6 @@
 
 var solutionRoot = Directory("./");
 var solutionFolder = solutionRoot + File("SquirrelCake.sln");
-
 Task("CleanUp")
 	.Does(() => {
 		DotNetCoreClean(solutionFolder);
@@ -77,11 +76,6 @@ Task("Publish")
 		DotNetCorePublish(application, settings);
 	});
 
-var deploymentDirectory = Directory("./deployment");
-var win10DeploymentDirectory = deploymentDirectory + Directory("win10-x64");
-var macOSeploymentDirectory = deploymentDirectory + Directory("macOS-x64");
-var linuxDeploymentDirectory = deploymentDirectory + Directory("linux-x64");
-
 string GetRuntimeID(RuntimeEnum runtime)
 {
 	switch (runtime)
@@ -99,6 +93,10 @@ string GetPublishFolder(RuntimeEnum runtime)
 	return deploymentDirectory + Directory("/files");
 }
 
+var deploymentDirectory = Directory("./deployment");
+var win10DeploymentDirectory = deploymentDirectory + Directory("win10-x64");
+var macOSeploymentDirectory = deploymentDirectory + Directory("macOS-x64");
+var linuxDeploymentDirectory = deploymentDirectory + Directory("linux-x64");
 string GetDeploymentFolder(RuntimeEnum runtime)
 {
 	switch (runtime)
@@ -249,6 +247,6 @@ Arguments
 		);
 	});
 
+var target = Argument("target", "Squirrel");
 
-var target = Argument("target", "ExecuteBuild");
-Task("ExecuteBuild");
+RunTarget(target);
