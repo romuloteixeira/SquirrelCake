@@ -330,6 +330,17 @@ deployment/**
 !deployment/linux-x64/Squirrel.nuspec.Template
 !deployment/linux-x64/create-nupkg-entries.linq
 
+deployment/**
+!deployment/win10-x64/SquirrelCake.nuspec
+!deployment/win10-x64/SquirrelCake.nuspec.Template
+!deployment/win10-x64/create-nupkg-entries.linq
+!deployment/osx-x64/SquirrelCake.nuspec
+!deployment/osx-x64/SquirrelCake.nuspec.Template
+!deployment/osx-x64/create-nupkg-entries.linq
+!deployment/linux-x64/SquirrelCake.nuspec
+!deployment/linux-x64/SquirrelCake.nuspec.Template
+!deployment/linux-x64/create-nupkg-entries.linq
+
 # Tabs Studio
 *.tss
 
