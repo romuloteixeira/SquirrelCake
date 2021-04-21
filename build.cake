@@ -11,6 +11,9 @@ var solutionRoot = Directory("./");
 var solutionFolder = solutionRoot + File("SquirrelCake.sln");
 var deploymentDirectory = Directory("./deployment");
 
+var applicationDirectory = solutionRoot + Directory("SquirrelCake.Application");
+var application = applicationDirectory + File("SquirrelCake.Application.csproj");
+
 Task("CleanUp")
 	.Does(() => {
 		DotNetCoreClean(solutionFolder);
@@ -26,21 +29,21 @@ var configuration = Argument("configuration", "Release");
 Task("Build")
 	.IsDependentOn("Restore")
 	.Does(() => {
-		ElectronNetVersion(solutionRoot);
+		ElectronNetVersion(applicationDirectory);
 
-		ElectronNetBuildSettings settingsElectron = new ElectronNetBuildSettings();
-		settingsElectron.WorkingDirectory = solutionRoot;
-		settingsElectron.ElectronTarget = ElectronTarget.Win;
-		settingsElectron.DotNetConfig = DotNetConfig.Release;
+		ElectronNetBuildSettings settings = new ElectronNetBuildSettings();
+		settings.WorkingDirectory = applicationDirectory;
+		settings.ElectronTarget = ElectronTarget.Win;
+		settings.DotNetConfig = DotNetConfig.Release;
 
-		ElectronNetBuild(settingsElectron);
+		ElectronNetBuild(settings);
 
-		var settings = new DotNetCoreBuildSettings
-		{
-			Configuration = configuration,
-			NoRestore = true,
-		};
-		DotNetCoreBuild(solutionFolder, settings);
+		// var settings = new DotNetCoreBuildSettings
+		// {
+		// 	Configuration = configuration,
+		// 	NoRestore = true,
+		// };
+		// DotNetCoreBuild(solutionFolder, settings);
 	});
 
 Task("Test")
@@ -67,8 +70,8 @@ enum RuntimeEnum
 }
 
 var runtimeArgument = Argument<RuntimeEnum>("runtime", RuntimeEnum.Win10);
-var applicationDirectory = solutionRoot + Directory("SquirrelCake.Application");
-var application = applicationDirectory + File("SquirrelCake.Application.csproj");
+// var applicationDirectory = solutionRoot + Directory("SquirrelCake.Application");
+// var application = applicationDirectory + File("SquirrelCake.Application.csproj");
 Task("Publish")
 	.IsDependentOn("Test")
 	.Does(() => {
