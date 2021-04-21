@@ -319,16 +319,6 @@ __pycache__/
 # Cake - Uncomment if you are using it
 tools/**
 !tools/packages.config
-deployment/**
-!!deployment/win10-x64/Squirrel.nuspec
-!deployment/win10-x64/Squirrel.nuspec.Template
-!deployment/win10-x64/create-nupkg-entries.linq
-!deployment/osx-x64/Squirrel.nuspec
-!deployment/osx-x64/Squirrel.nuspec.Template
-!deployment/osx-x64/create-nupkg-entries.linq
-!deployment/linux-x64/Squirrel.nuspec
-!deployment/linux-x64/Squirrel.nuspec.Template
-!deployment/linux-x64/create-nupkg-entries.linq
 
 deployment/**
 !deployment/win10-x64/SquirrelCake.nuspec
