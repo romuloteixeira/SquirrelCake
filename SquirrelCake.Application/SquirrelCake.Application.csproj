@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyVersion></AssemblyVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>

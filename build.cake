@@ -113,15 +113,14 @@ string GetDeploymentFolder(RuntimeEnum runtime)
 
 const string NuSpecFileTemplate = "\t<file src=\".\\files\\{1}{0}\" target=\"lib\\net45\\{1}{0}\" />";
 
-var nuSpec = win10DeploymentDirectory + File("SquirrelCakeTik.nuspec");
-var nuSpecTemplate = win10DeploymentDirectory + File("SquirrelCakeTik.nuspec.Template");
+var nuSpec =  win10DeploymentDirectory + File("SquirrelCake.nuspec");
+var nuSpecTemplate =  win10DeploymentDirectory + File("SquirrelCake.nuspec.Template");
 var win10PublishDirectory = win10DeploymentDirectory + Directory("files");
 //var macOSPublishDirectory = macOSeploymentDirectory + Directory("files");
 Task("NuSpec")
 	.IsDependentOn("Publish")
 	.Does(() => {
 		CopyFile(File(nuSpecTemplate), nuSpec);
-		Console.WriteLine("2");
 		var namespaceDic = new Dictionary<string, string>
 		{
 			{"ns", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"}
@@ -130,7 +129,6 @@ Task("NuSpec")
 		{
 			Namespaces = namespaceDic,
 		};
-		Console.WriteLine("1", nuSpec);
 		XmlPoke(nuSpec, "/ns:package/ns:metadata/ns:version", GetVersion(), settings);
 
 		var files = new List<string>();
@@ -150,9 +148,9 @@ string GetExe(string releaseDirectory)
 {
 	var nameExes = from f in System.IO.Directory.GetFiles(releaseDirectory, "*.exe")
 					let name = System.IO.Path.GetFileName(f)
-					orderby name
+					orderby name descending
 					select name;
-	return nameExes.Single();
+	return nameExes.FirstOrDefault();
 }
 
 List<string> GetFiles(string releaseDirectory, string extension)
@@ -179,7 +177,7 @@ Task("Squirrel")
 	.IsDependentOn("NuPkg")
 	.Does(() => {
 		FilePath nuPkgPath = win10NupgkDirectory + File(FormatNupkgName(GetVersion()));
-		Squirrel(nuPkgPath, new SquirrelSettings
+		 Squirrel(nuPkgPath, new SquirrelSettings
 		{
 			NoMsi = true,
 			ReleaseDirectory = win10OutputDirectory,
@@ -190,7 +188,7 @@ Task("Squirrel")
 
 string FormatNupkgName(string version)
 {
-	return $"SquirrelCakeTik.{version}.nupkg";
+	return $"SquirrelCake.{version}.nupkg";
 }
 
 var certificateThumbprint = Argument("thumprint", EnvironmentVariable("SignatureCertThumbprint"));
@@ -233,7 +231,7 @@ Task("Default")
 	.Does(() => {
 		Information($"thumbprint is {EnvironmentVariable("SignatureCertThumbprint")}");
 		Information(
-			@"SquirrelCakeTik build process
+			@"SquirrelCake build process
 IncVersion   .... increased version's build part (in AssemblyInfo.cs)
 SetVersion .... sets version based on NewVersion argument (1.2.3 format)
 GetVersion .... displays current version
