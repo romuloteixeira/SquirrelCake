@@ -11,7 +11,7 @@
     "appId": "com.SquirrelCake.Application.app",
     "productName": "SquirrelCake.Application",
     "copyright": "Copyright © 2020",
-    "buildVersion": "1.0.0",
+    "buildVersion": "1.0.1",
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SquirrelCake</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>SquirrelCake</title>
     <authors>Righthand</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -54,6 +54,7 @@
 	<file src=".\files\appsettings.Development.json" target="lib\net45\appsettings.Development.json" />
 	<file src=".\files\appsettings.json" target="lib\net45\appsettings.json" />
 	<file src=".\files\aspnetcorev2_inprocess.dll" target="lib\net45\aspnetcorev2_inprocess.dll" />
+	<file src=".\files\Cake.Electron.Net.dll" target="lib\net45\Cake.Electron.Net.dll" />
 	<file src=".\files\clrcompression.dll" target="lib\net45\clrcompression.dll" />
 	<file src=".\files\clretwrc.dll" target="lib\net45\clretwrc.dll" />
 	<file src=".\files\clrjit.dll" target="lib\net45\clrjit.dll" />

@@ -2,7 +2,10 @@
 #addin nuget:?package=Cake.Figlet&version=2.0.1
 #addin Cake.Squirrel&version=0.15.1
 #tool Squirrel.Windows&version=2.0.1
+#addin nuget:?package=Cake.Electron.Net&version=1.1.0
 
+using Cake.Electron.Net;
+using Cake.Electron.Net.Commands.Settings;
 
 var solutionRoot = Directory("./");
 var solutionFolder = solutionRoot + File("SquirrelCake.sln");
@@ -23,6 +26,15 @@ var configuration = Argument("configuration", "Release");
 Task("Build")
 	.IsDependentOn("Restore")
 	.Does(() => {
+		ElectronNetVersion(solutionRoot);
+
+		ElectronNetBuildSettings settingsElectron = new ElectronNetBuildSettings();
+		settingsElectron.WorkingDirectory = solutionRoot;
+		settingsElectron.ElectronTarget = ElectronTarget.Win;
+		settingsElectron.DotNetConfig = DotNetConfig.Release;
+
+		ElectronNetBuild(settingsElectron);
+
 		var settings = new DotNetCoreBuildSettings
 		{
 			Configuration = configuration,
