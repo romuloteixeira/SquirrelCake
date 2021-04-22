@@ -27,13 +27,18 @@ var configuration = Argument("configuration", "Release");
 Task("Build")
 	.IsDependentOn("Restore")
 	.Does(() => {
+		var publishFolder = GetPublishFolder(runtimeArgument);
+		CleanDirectory(publishFolder);
+
 		ElectronNetVersion(applicationDirectory);
 
-		ElectronNetBuildSettings settings = new ElectronNetBuildSettings();
-		settings.WorkingDirectory = applicationDirectory;
-		settings.ElectronTarget = ElectronTarget.Win;
-		settings.DotNetConfig = DotNetConfig.Release;
-
+		ElectronNetBuildSettings settings = new ElectronNetBuildSettings
+		{
+			WorkingDirectory = applicationDirectory,
+			ElectronTarget = ElectronTarget.Win,
+			DotNetConfig = DotNetConfig.Release
+		};
+		
 		ElectronNetBuild(settings);
 
 		// var settings = new DotNetCoreBuildSettings
@@ -74,7 +79,7 @@ Task("Publish")
 	.IsDependentOn("Test")
 	.Does(() => {
 		var publishFolder = GetPublishFolder(runtimeArgument);
-		CleanDirectory(publishFolder);
+		// CleanDirectory(publishFolder);
 		
 		Information($"Publishing {runtimeArgument}");
 		
@@ -124,7 +129,7 @@ string GetDeploymentFolder(RuntimeEnum runtime)
 	}
 }
 
-const string NuSpecFileTemplate = "\t<file src=\".\\files\\{1}{0}\" target=\"lib\\net45\\{1}{0}\" />";
+const string NuSpecFileTemplate = "\t<file src=\".\\files\\{1}{0}\" target=\"lib\\net5\\{1}{0}\" />";
 
 var nuSpec =  win10DeploymentDirectory + File("SquirrelCake.nuspec");
 var nuSpecTemplate =  win10DeploymentDirectory + File("SquirrelCake.nuspec.Template");
@@ -145,7 +150,7 @@ Task("NuSpec")
 		XmlPoke(nuSpec, "/ns:package/ns:metadata/ns:version", GetVersion(), settings);
 
 		var files = new List<string>();
-		files.Add(GetExe(win10PublishDirectory));
+		files.AddRange(GetExe(win10PublishDirectory));
 		files.AddRange(GetFiles(win10PublishDirectory, "*"));
 
 		var relativeFiles = files.Select(f => string.Format(NuSpecFileTemplate, f, string.Empty)).ToArray();
@@ -158,16 +163,16 @@ string GetVersion()
 	return version;
 }
 
-string GetExe(string releaseDirectory)
+IEnumerable<string> GetExe(string releaseDirectory)
 {
-	var nameExes = from f in System.IO.Directory.GetFiles(releaseDirectory, "*.exe")
+	var nameExes = from f in System.IO.Directory.GetFiles(releaseDirectory, "SquirrelCake*.exe")
 					let name = System.IO.Path.GetFileName(f)
 					orderby name descending
 					select name;
-	return nameExes.FirstOrDefault();
+	return nameExes;
 }
 
-List<string> GetFiles(string releaseDirectory, string extension)
+IEnumerable<string> GetFiles(string releaseDirectory, string extension)
 {
 	var files = from f in System.IO.Directory.GetFiles(releaseDirectory, $"*.{extension}")
 				let name = System.IO.Path.GetFileName(f)
@@ -175,7 +180,7 @@ List<string> GetFiles(string releaseDirectory, string extension)
 				orderby name
 				select name;
 	
-	return files.ToList();
+	return files;
 }
 
 
