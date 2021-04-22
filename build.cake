@@ -12,8 +12,6 @@ var solutionFolder = solutionRoot + File("SquirrelCake.sln");
 var deploymentDirectory = Directory("./deployment");
 
 var applicationDirectory = solutionRoot + Directory("SquirrelCake.Application");
-var application = applicationDirectory + File("SquirrelCake.Application.csproj");
-
 Task("CleanUp")
 	.Does(() => {
 		DotNetCoreClean(solutionFolder);
@@ -71,7 +69,7 @@ enum RuntimeEnum
 
 var runtimeArgument = Argument<RuntimeEnum>("runtime", RuntimeEnum.Win10);
 // var applicationDirectory = solutionRoot + Directory("SquirrelCake.Application");
-// var application = applicationDirectory + File("SquirrelCake.Application.csproj");
+var application = applicationDirectory + File("SquirrelCake.Application.csproj");
 Task("Publish")
 	.IsDependentOn("Test")
 	.Does(() => {
@@ -231,7 +229,7 @@ Task("IncVersion")
 		parts[2] = (int.Parse(parts[2] + 1)).ToString();
 		version = string.Join(".", parts);
 		
-		XmlPoke(application, "/Project/PropertyGroup/AssemblyVersion", version);
+		XmlPoke(application, "/Project/PropertyGroup/Version", version);
 
 		Information($"New version is {version}");
 	});

@@ -54,6 +54,19 @@ namespace SquirrelCake.Application
             });
 
             Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+
+            if (HybridSupport.IsElectronActive)
+            {
+                CreateWindow();
+            }
+        }
+
+        private async void CreateWindow()
+        {
+            var window = await Electron.WindowManager.CreateWindowAsync();
+            window.OnClosed += () => {
+                Electron.App.Quit();
+            };
         }
     }
 }

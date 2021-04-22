@@ -194,8 +194,8 @@
 	<file src=".\files\Microsoft.Win32.Primitives.dll" target="lib\net45\Microsoft.Win32.Primitives.dll" />
 	<file src=".\files\Microsoft.Win32.Registry.dll" target="lib\net45\Microsoft.Win32.Registry.dll" />
 	<file src=".\files\Microsoft.Win32.SystemEvents.dll" target="lib\net45\Microsoft.Win32.SystemEvents.dll" />
+	<file src=".\files\mscordaccore_amd64_amd64_5.0.521.16609.dll" target="lib\net45\mscordaccore_amd64_amd64_5.0.521.16609.dll" />
 	<file src=".\files\mscordaccore.dll" target="lib\net45\mscordaccore.dll" />
-	<file src=".\files\mscordaccore_amd64_amd64_5.0.421.11614.dll" target="lib\net45\mscordaccore_amd64_amd64_5.0.421.11614.dll" />
 	<file src=".\files\mscordbi.dll" target="lib\net45\mscordbi.dll" />
 	<file src=".\files\mscorlib.dll" target="lib\net45\mscorlib.dll" />
 	<file src=".\files\mscorrc.dll" target="lib\net45\mscorrc.dll" />

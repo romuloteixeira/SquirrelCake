@@ -1,20 +1,20 @@
 {
-  "executable": "SquirrelCake",
+  "executable": "SquirrelCake.Application",
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "SquirrelCake",
+  "name": "SquirrelCake.Application",
   "author": "",
   "singleInstance": false,
   "environment": "Production",
   "build": {
-    "appId": "com.SquirrelCake.app",
-    "productName": "SquirrelCake",
+    "appId": "com.SquirrelCake.Application.app",
+    "productName": "SquirrelCake.Application",
     "copyright": "Copyright © 2020",
-    "buildVersion": "1.0.1",
+    "buildVersion": "1.0.0",
     "compression": "maximum",
     "directories": {
-      "output": "../deployment/win10-x64/files"
+      "output": "../../../bin/Desktop"
     },
     "extraResources": [
       {
