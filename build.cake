@@ -154,7 +154,8 @@ Task("NuSpec")
 
 string GetVersion()
 {
-	return XmlPeek(application, "/Project/PropertyGroup/AssemblyVersion");
+	var version = XmlPeek(application, "/Project/PropertyGroup/Version");
+	return version;
 }
 
 string GetExe(string releaseDirectory)

@@ -54,7 +54,6 @@
 	<file src=".\files\appsettings.Development.json" target="lib\net45\appsettings.Development.json" />
 	<file src=".\files\appsettings.json" target="lib\net45\appsettings.json" />
 	<file src=".\files\aspnetcorev2_inprocess.dll" target="lib\net45\aspnetcorev2_inprocess.dll" />
-	<file src=".\files\Cake.Electron.Net.dll" target="lib\net45\Cake.Electron.Net.dll" />
 	<file src=".\files\clrcompression.dll" target="lib\net45\clrcompression.dll" />
 	<file src=".\files\clretwrc.dll" target="lib\net45\clretwrc.dll" />
 	<file src=".\files\clrjit.dll" target="lib\net45\clrjit.dll" />
@@ -194,8 +193,8 @@
 	<file src=".\files\Microsoft.Win32.Primitives.dll" target="lib\net45\Microsoft.Win32.Primitives.dll" />
 	<file src=".\files\Microsoft.Win32.Registry.dll" target="lib\net45\Microsoft.Win32.Registry.dll" />
 	<file src=".\files\Microsoft.Win32.SystemEvents.dll" target="lib\net45\Microsoft.Win32.SystemEvents.dll" />
-	<file src=".\files\mscordaccore_amd64_amd64_5.0.521.16609.dll" target="lib\net45\mscordaccore_amd64_amd64_5.0.521.16609.dll" />
 	<file src=".\files\mscordaccore.dll" target="lib\net45\mscordaccore.dll" />
+	<file src=".\files\mscordaccore_amd64_amd64_5.0.521.16609.dll" target="lib\net45\mscordaccore_amd64_amd64_5.0.521.16609.dll" />
 	<file src=".\files\mscordbi.dll" target="lib\net45\mscordbi.dll" />
 	<file src=".\files\mscorlib.dll" target="lib\net45\mscorlib.dll" />
 	<file src=".\files\mscorrc.dll" target="lib\net45\mscorrc.dll" />
