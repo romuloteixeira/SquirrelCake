@@ -1,4 +1,4 @@
-//Cake, Squirrel and Electron
+//Cake, Squirrel, Electron and Razor
 #addin nuget:?package=Cake.Figlet&version=2.0.1
 #addin Cake.Squirrel&version=0.15.1
 #tool Squirrel.Windows&version=2.0.1
@@ -40,29 +40,12 @@ Task("Build")
 		};
 		
 		ElectronNetBuild(settings);
-
-		// var settings = new DotNetCoreBuildSettings
-		// {
-		// 	Configuration = configuration,
-		// 	NoRestore = true,
-		// };
-		// DotNetCoreBuild(solutionFolder, settings);
 	});
 
 Task("Test")
 	.IsDependentOn("Build")
 	.Does(() => {
 		// For now, has no test.
-
-		/*
-		var settings = new DotNetCoreTestSettings
-		{
-			NoRestore = true,
-			Configuration = configuration,
-			NoBuild = true,
-		};
-		DotNetCoreTest(solutionFolder, settings);
-		*/
 	});
 
 enum RuntimeEnum
@@ -73,7 +56,6 @@ enum RuntimeEnum
 }
 
 var runtimeArgument = Argument<RuntimeEnum>("runtime", RuntimeEnum.Win10);
-// var applicationDirectory = solutionRoot + Directory("SquirrelCake.Application");
 var application = applicationDirectory + File("SquirrelCake.Application.csproj");
 Task("Publish")
 	.IsDependentOn("Test")
@@ -134,7 +116,6 @@ const string NuSpecFileTemplate = "\t<file src=\".\\files\\{1}{0}\" target=\"lib
 var nuSpec =  win10DeploymentDirectory + File("SquirrelCake.nuspec");
 var nuSpecTemplate =  win10DeploymentDirectory + File("SquirrelCake.nuspec.Template");
 var win10PublishDirectory = win10DeploymentDirectory + Directory("files");
-//var macOSPublishDirectory = macOSeploymentDirectory + Directory("files");
 Task("NuSpec")
 	.IsDependentOn("Publish")
 	.Does(() => {
