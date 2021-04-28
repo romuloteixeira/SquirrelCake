@@ -1,24 +1,20 @@
 {
-  "executable": "SquirrelCake.Application",
+  "executable": "",
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "SquirrelCake.Application",
+  "name": "",
   "author": "",
   "singleInstance": false,
   "environment": "Production",
   "build": {
-    "appId": "com.SquirrelCake.Application.app",
-    "productName": "SquirrelCake.Application",
+    "appId": "com..app",
+    "productName": "",
     "copyright": "Copyright © 2020",
-    "buildVersion": "5.22.15",
+    "buildVersion": "1.0.0",
     "compression": "maximum",
     "directories": {
-      "output": "../../../../deployment/win10-x64/files"
-    },
-    "publish": {
-      "provider": "generic",
-      "url": "http://localhost/squirrelcakeupdate/"
+      "output": "../../../bin/Desktop"
     },
     "extraResources": [
       {
