@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ElectronNET.API;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,6 +15,11 @@ namespace SquirrelCake.Application.Pages
 
         public IndexModel(ILogger<IndexModel> logger)
         {
+            if (Electron.App.CommandLine.HasSwitchAsync("user").Result)
+            {
+                string value = Electron.App.CommandLine.GetSwitchValueAsync("user").Result;
+                Electron.Dialog.ShowMessageBoxAsync($"User: {value}").Wait();
+            }
             _logger = logger;
         }
 
