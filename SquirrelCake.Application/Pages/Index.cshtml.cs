@@ -17,8 +17,9 @@ namespace SquirrelCake.Application.Pages
         {
             if (Electron.App.CommandLine.HasSwitchAsync("user").Result)
             {
-                string value = Electron.App.CommandLine.GetSwitchValueAsync("user").Result;
-                Electron.Dialog.ShowMessageBoxAsync($"User: {value}").Wait();
+                string[] value = Electron.App.CommandLine.GetSwitchValueAsync("user").Result.Split(":");
+                string passValue = Electron.App.CommandLine.GetSwitchValueAsync("password").Result;
+                Electron.Dialog.ShowMessageBoxAsync($"User: {value[1]}").Wait();
             }
             _logger = logger;
         }

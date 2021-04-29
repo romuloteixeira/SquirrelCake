@@ -11,7 +11,7 @@
     "appId": "com.SquirrelCake.Application.app",
     "productName": "SquirrelCake.Application",
     "copyright": "Copyright © 2020",
-    "buildVersion": "5.22.22",
+    "buildVersion": "5.22.23",
     "compression": "maximum",
     "directories": {
       "output": "../../../../deployment/win10-x64/files"
